@@ -59,4 +59,54 @@ heapSort v
 	|v == [] =[]
 	|otherwise = buildMaxHeap v []
 	
+-- EXERCICIO AULA 2 -----------------------------------------------	
+type Ponto = (Float, Float)
+type Reta = (Ponto, Ponto)
+
+first :: Reta-> (Float, Float)
+first ((x1,y1),(x2,y2)) = (x1,x2)
+
+second :: Reta-> (Float, Float)
+second ((x1,y1),(x2,y2)) = (y1,y2)
+
+vertical :: Reta-> String
+vertical ((x1,y1),(x2,y2)) = if(x1==x2)then "True"
+				else "False"
+
+type Pessoa = String
+type Livro = String 
+type BancoDados = [(Pessoa, Livro)]
+baseExemplo :: BancoDados
+
+baseExemplo = 
+ [("Sergio","O Senhor dos Aneis"),
+ ("Andre","HP"),
+ ("Andre","LLL"),
+ ("Fernando","Jonathan Strange & Mr. Norrell"), 
+ ("Fernando","A Game of Thrones")]
+
+livros:: BancoDados ->Pessoa->[Livro]
+livros base x 
+	|base == [] = []
+	|fst (head base) == x = snd(head base):livros (tail base) x
+	|otherwise = livros (tail base) x
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
 
