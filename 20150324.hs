@@ -1,8 +1,37 @@
-swap  :: [Int]->Int->Int->[Int]
-swap  v i j
-		|(v == [] || i == j) = []
-		|j > i = (take (i) v) ++ ((v!!j):[]) ++ (drop (i+1) (take (j) v)) ++ ((v!!i):[]) ++ (drop(j+1)v)
-		|otherwise = (take (j) v) ++ ((v!!i):[]) ++ (drop (j+1) (take (i) v)) ++ ((v!!j):[]) ++ (drop(i+1)v)
+-- MERGESORT -----------------------------------------------
+merge :: (Ord a) => [a] -> [a] -> [a]
+merge xs [] = xs
+merge [] ys = ys
+merge (x:xs) (y:ys)
+ | x < y = x:(merge xs (y:ys))
+ | otherwise = y:(merge (x:xs) ys)
+
+mergesort :: (Ord a) => [a] -> [a]
+mergesort [] = []
+mergesort [x] = [x]
+mergesort xs = merge (mergesort first) (mergesort second)
+ where
+ 	(first, second) = splitAt (((length xs) + 1) `div` 2) xs
+
+-- HEAPSORT -----------------------------------------------
+
+right :: Int->Int
+right i = 2*i +1
+
+left :: Int->Int
+left i = 2*i
+
+swap :: [Int]->Int->Int->[Int]
+swap v i j
+	|(v == [] || i == j) = []
+	|otherwise = (take (i) v) ++ ((v!!j):[]) ++ (drop (i+1) (take (j) v)) ++ ((v!!i):[]) ++ (drop(j+1)v)
+
+heapify :: [Int] -> Int -> [Int] 
+heapify v i
+	|  left i >= (length v) = v
+	| ((right i) < (length v)) && (v!!(left i) < v!!(right i) )  && (v!!(right i) > (v!!(i))) = heapify (swap  v i (right i) ) (right i)
+	| (v!!(left i) > (v!!(i)) ) = heapify (swap  v i (left i) ) (left i)
+	| otherwise = v
 
 bubHeap :: [Int]->Int->[Int]
 bubHeap v i
@@ -14,13 +43,6 @@ maxHeapInsert :: [Int]->Int->[Int]
 maxHeapInsert v i
 		|v == [] = i:[]
 		|otherwise = bubHeap (v ++ i:[]) (length v)
-
-heapify :: [Int] -> Int -> [Int] 
-heapify v i
-	|  2*i >= (length v) = v
-	| ((2*i+1) < (length v)) && (v!!(2*i) < v!!(2*i +1) )  && (v!!(2*i +1) > (v!!(i))) = heapify (swap  v i (2*i + 1) ) (2*i + 1)
-	| (v!!(2*i) > (v!!(i)) ) = heapify (swap  v i (2*i) ) (2*i)
-	| otherwise = v
 
 order :: [Int] -> [Int]
 order v
