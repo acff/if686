@@ -85,11 +85,19 @@ baseExemplo =
  ("Fernando","Jonathan Strange & Mr. Norrell"), 
  ("Fernando","A Game of Thrones")]
 
+--livros ls pp = [l |(p,l)<-ls, pp = p]
 livros:: BancoDados ->Pessoa->[Livro]
+livros [] _ = []
 livros base x 
 	|base == [] = []
 	|fst (head base) == x = snd(head base):livros (tail base) x
 	|otherwise = livros (tail base) x
+	
+emprestimos:: BancoDados -> Livro ->[Pessoa]
+emprestimos base l
+	|base == [] = []
+	|snd (head base) == l = fst(head base):emprestimos (tail base) l
+	|otherwise = 
 
 
 
