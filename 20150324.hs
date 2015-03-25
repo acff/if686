@@ -60,19 +60,20 @@ heapSort v
 	|otherwise = buildMaxHeap v []
 	
 -- EXERCICIO AULA 2 -----------------------------------------------	
+--Slide 7
 type Ponto = (Float, Float)
 type Reta = (Ponto, Ponto)
 
-first :: Reta-> (Float, Float)
-first ((x1,y1),(x2,y2)) = (x1,x2)
+coordX :: Ponto-> Float
+coordX p = fst p
 
-second :: Reta-> (Float, Float)
-second ((x1,y1),(x2,y2)) = (y1,y2)
+coordY :: Ponto-> Float
+coordY p = snd p
 
-vertical :: Reta-> String
-vertical ((x1,y1),(x2,y2)) = if(x1==x2)then "True"
-				else "False"
+vertical :: Reta-> Bool
+vertical x = fst (fst x) == fst (snd x)
 
+--Slide 14
 type Pessoa = String
 type Livro = String 
 type BancoDados = [(Pessoa, Livro)]
@@ -81,23 +82,60 @@ baseExemplo :: BancoDados
 baseExemplo = 
  [("Sergio","O Senhor dos Aneis"),
  ("Andre","HP"),
+ ("Ana","HP"),
  ("Andre","LLL"),
  ("Fernando","Jonathan Strange & Mr. Norrell"), 
  ("Fernando","A Game of Thrones")]
 
---livros ls pp = [l |(p,l)<-ls, pp = p]
-livros:: BancoDados ->Pessoa->[Livro]
+{-Funções sobre o banco de dados - consultas -}
+livros:: BancoDados->Pessoa->[Livro]
 livros [] _ = []
 livros base x 
 	|base == [] = []
 	|fst (head base) == x = snd(head base):livros (tail base) x
 	|otherwise = livros (tail base) x
 	
-emprestimos:: BancoDados -> Livro ->[Pessoa]
+emprestimos:: BancoDados->Livro ->[Pessoa]
 emprestimos base l
 	|base == [] = []
 	|snd (head base) == l = fst(head base):emprestimos (tail base) l
-	|otherwise = 
+	|otherwise = emprestimos (tail base) l
+	
+emprestado:: BancoDados->Livro->Bool
+emprestado base l
+	|base == [] = False
+	|snd (head base) == l = True
+	|otherwise = emprestado (tail base) l
+	
+qtdEmprestimos:: BancoDados->Pessoa->Int
+qtdEmprestimos base p
+	|base == [] = 0
+	|fst (head base) == p = 1 + qtdEmprestimos (tail base) p
+	|otherwise = qtdEmprestimos (tail base) p
+	
+livrosA ls pp = [l |(p,l)<-ls, p == pp]
+emprestimosA base ll = [l |(p, l)<-base, l == ll]
+emprestadoA base ll = [l | (p,l)<-base, l == ll]
+qtdEmprestimosA base pp = length [p | (p,l)<-base, p == pp ]
+
+--Slide 15
+{-Funções sobre o banco de dados - atualizações -}
+
+emprestar:: BancoDados->Pessoa->Livro->BancoDados
+emprestar base p l 
+		|base == [] = [(p, l)]
+		|emprestado base l == True = base
+		|otherwise = base ++ [(p, l)]
+		
+devolver:: BancoDados->Pessoa->Livro->BancoDados
+devolver base p l
+		|base == [] = []
+		|(fst(head base) == p) && (snd(head base) == l)  = (tail base)
+		|otherwise = devolver (tail base) p l
+		
+devolverA base p l = [(pp,ll)| (pp,ll)<- base, pp /= p || ll /= l]
+
+	
 
 
 
