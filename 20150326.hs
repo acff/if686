@@ -81,5 +81,79 @@ comparaConjuntos a b
 		|otherwise = "conjuntos disjuntos"
 		
 
+----------------------------------{- EXERCICIOS AULA 3-}------------------------------------------
+--Slide 6
+takeA :: (Eq a) => [a]->Int->[a]
+takeA ll n
+	|(ll == [])||(n == 0) = []
+	|otherwise = (head ll) : (takeA (tail ll) (n-1))
+	
+dropA :: (Eq a) => [a]->Int->[a]
+dropA ll n
+	|ll == [] = []
+	|n == 0 = ll
+	|otherwise = dropA (tail ll) (n-1) 
+	
+takeWhileA :: [a]->(a->Bool)->[a]
+takeWhile [] _ = []
+takeWhileA ll f
+	|f (head ll) == False = []
+	|otherwise = head ll:takeWhileA (tail ll) (f)
+	
+dropWhileA :: [a]->(a->Bool)->[a]
+dropWhile [] _ = []
+dropWhileA ll f
+	|f (head ll) == False = ll
+	|otherwise = dropWhileA (tail ll) (f)
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
