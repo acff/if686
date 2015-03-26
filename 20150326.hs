@@ -106,6 +106,22 @@ dropWhileA ll f
 	|f (head ll) == False = ll
 	|otherwise = dropWhileA (tail ll) (f)
  
+--Slide 13
+merge :: (Ord a) => [a] -> [a] -> [a]
+merge xs [] = xs
+merge [] ys = ys
+merge (x:xs) (y:ys)
+	| x < y = x:(merge xs (y:ys))
+	| otherwise = y:(merge (x:xs) ys)
+
+mergesort :: (Ord a) => [a] -> [a]
+mergesort [] = []
+mergesort [x] = [x]
+mergesort xs = merge (mergesort first) (mergesort second)
+	where
+	(first, second) = splitAt (((length xs) + 1) `div` 2) xs
+	
+--Slide 14
 
 
 
