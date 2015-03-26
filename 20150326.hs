@@ -122,6 +122,22 @@ mergesort xs = merge (mergesort first) (mergesort second)
 	(first, second) = splitAt (((length xs) + 1) `div` 2) xs
 	
 --Slide 14
+qtd :: (Eq t) => [t] -> t ->Int
+qtd ll a = length ([x | x<-ll, x == a])
+
+concatenarListas :: (Eq t) => [[t]] -> [t]
+concatenarListas ll
+		|ll == [] = []
+		|otherwise = (head ll)++concatenarListas (tail ll)
+ 
+ 
+ -- [1,2,3] [10] --> [1,2,3,10] -->[(1,1),(2,1)...
+agrupar :: (Eq t) => [[t]] ->[(t,Int)]
+agrupar [[]] = []
+agrupar (x:xs) = ((head co), (qtd (tail co) (head co))+1 ):agrupar [[l|l<-(tail co), (l /= (head co))]]
+	where co = concatenarListas (x:xs)
+		
+
 
 
 
