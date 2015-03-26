@@ -130,8 +130,6 @@ concatenarListas ll
 		|ll == [] = []
 		|otherwise = (head ll)++concatenarListas (tail ll)
  
- 
- -- [1,2,3] [10] --> [1,2,3,10] -->[(1,1),(2,1)...
 agrupar :: (Eq t) => [[t]] ->[(t,Int)]
 agrupar [[]] = []
 agrupar (x:xs) = ((head co), (qtd (tail co) (head co))+1 ):agrupar [[l|l<-(tail co), (l /= (head co))]]
