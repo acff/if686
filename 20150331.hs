@@ -36,5 +36,5 @@ mediana list
 		|otherwise = quickSort (list)!!(div (length list) 2)	
 		
 filtroMediana :: [[Int]]->Int->[Int]
-filtroMediana [[]] n = 0  
+filtroMediana [[]] n =[]
 		
