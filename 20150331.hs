@@ -53,28 +53,111 @@ filtroMediana :: [[Int]]->Int->[Int]
 filtroMediana [[]] n =[]
 		
 
---Exercicios Monitoria
+--Exerc Monitoria
 --Q1
-
-
 listaEstados :: [Int]
 listaEstados = [1, 2, 3]
 
-listaTransicoes :: [(Int, Int, [Char])]
-listaTransicoes = [(1, 1, "1"), (1, 3, "0"), (3, 2, "1")] 
+listaTransicoes :: [(Int, Int, Char)]
+listaTransicoes = [(1, 1, '1'), (1, 3, '0'), (3, 2, '1')] 
 
 listaAceitacao :: [Int]
 listaAceitacao = [2]
 
-lt :: [(Int, Int, [Char])]->[Int]
-lt ((a,b,c):as) = list
-		where list = [a,b, (read c::Int)]
+proxEstado :: [(Int, Int, Char)]->Int->Char->Int
+proxEstado [] _ _ = 0
+proxEstado ((x,y,z):as) estadoAtual input
+		|((x == estadoAtual) && (z == input)) = y
+		|otherwise = proxEstado as estadoAtual input
+			 
+--entrada->lEstados->llTransicao->estadoInicial->lAceitacao
+afd :: [Char]->[Int]->[(Int, Int, Char)]->Int->[Int]->Bool
+afd (a:as) lEstados lTransicao estadoInicial lAceitacao
+	|[proxEstado lTransicao estadoInicial a ] == [x| x<-lAceitacao, as == []] = True
+	|as == [] = False
+	|otherwise = afd as lEstados lTransicao estadoAtual lAceitacao
+	where estadoAtual = proxEstado lTransicao estadoInicial a 
+	
+	
+--Q2
+--finalizar 
+hexaDecimal :: [String]->[Int]
+hexaDecimal [] = []
+hexaDecimal (a:as) = ((read a::Int):hexaDecimal as)
 
-proxEstado :: [Char]->Int->[(Int, Int, [Char])]->Int
-proxEstado c estado lisT 
-		|(read c::Int) == ll!!2 && estado == ll!!0 =ll!!1
-		|otherwise = proxEstado c estado (tail (lisT))
-		where ll = lt lisT
+deciToHexa :: Int->String
+deciToHexa 0 = ""
+deciToHexa num 
+	|mod num 16 == 10 = deciToHexa(d) ++"A"
+	|mod num 16 == 11 = deciToHexa(d) ++"B"
+	|mod num 16 == 12 = deciToHexa(d) ++"C"
+	|mod num 16 == 13 = deciToHexa(d) ++"D"
+	|mod num 16 == 14 = deciToHexa(d) ++"E"
+	|mod num 16 == 15 = deciToHexa(d) ++"F"
+	|otherwise = deciToHexa(d) ++ show ((mod num 16)::Int)
+	where d = div num 16
+		
+somatorioHexadecimal :: [String]->String
+somatorioHexadecimal n = deciToHexa (sum (hexaDecimal(n)))
+
+{--Q3 
+palindromoDecimal :: String->String
+palindromoDecimal "" = ""
+palindromoDecimal (a:as)
+		|a == []= ""
+		|a == "A" =  -}
+		
+
+--Q4
+type Vector = [Double]
+type Matrix = [Vector]
+
+mA::Matrix
+mB::Matrix
+mA = [[1,2],[2,3]]
+mB = [[1,1],[1,1]]
+
+getElemPos :: Matrix->Int->Int->Double
+getElemPos m i j = (m!!(i-1))!!(j-1)
+
+mult :: Vector->Vector->Double
+mult a b = sum [x*y|(x,y)<-zip a b]
+
+col:: Matrix->Matrix
+col (a:as)
+		|length a == 1 = [[head x|x<-(a:as), x/=[]]]
+		|True = [map head (a:as)]++col(map tail (a:as))
+		
+
+mult :: Matriz -> Matriz -> Matriz
+mult (x:[]) b = [map (mult x) (col b)]
+mult (x:xs) b 
+		| length x == length b = [map (pp x) (col b)] ++ (mult xs b)
+        | True = error "-------------------"
+
+multiplicaM :: Matrix-> Matrix-> Matrix
+multiplicaM [] _ = [[]]
+
+--multiplicaM 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	
 	
