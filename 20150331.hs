@@ -52,3 +52,29 @@ mediana list
 filtroMediana :: [[Int]]->Int->[Int]
 filtroMediana [[]] n =[]
 		
+
+--Exercicios Monitoria
+--Q1
+
+
+listaEstados :: [Int]
+listaEstados = [1, 2, 3]
+
+listaTransicoes :: [(Int, Int, [Char])]
+listaTransicoes = [(1, 1, "1"), (1, 3, "0"), (3, 2, "1")] 
+
+listaAceitacao :: [Int]
+listaAceitacao = [2]
+
+lt :: [(Int, Int, [Char])]->[Int]
+lt ((a,b,c):as) = list
+		where list = [a,b, (read c::Int)]
+
+proxEstado :: [Char]->Int->[(Int, Int, [Char])]->Int
+proxEstado c estado lisT 
+		|(read c::Int) == ll!!2 && estado == ll!!0 =ll!!1
+		|otherwise = proxEstado c estado (tail (lisT))
+		where ll = lt lisT
+
+	
+	
