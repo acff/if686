@@ -53,7 +53,7 @@ filtroMediana :: [[Int]]->Int->[Int]
 filtroMediana [[]] n =[]
 		
 
---Exerc Monitoria
+--Exerc Monitoria----------------------------------------------------------------------------------------------
 --Q1
 listaEstados :: [Int]
 listaEstados = [1, 2, 3]
@@ -80,10 +80,20 @@ afd (a:as) lEstados lTransicao estadoInicial lAceitacao
 	
 	
 --Q2
---finalizar 
-hexaDecimal :: [String]->[Int]
-hexaDecimal [] = []
-hexaDecimal (a:as) = ((read a::Int):hexaDecimal as)
+
+--lista com correspondecia Char -> Int
+conHexToDeci :: [(Char, Int)]
+conHexToDeci = zip (['1'..'9']++['A'..'F']) ([1..15])
+
+hexToDeci:: Char-> [(Char,Int)]-> Int
+hexToDeci x ll = [num| (numHex,num)<-ll, x == numHex]!!0 
+
+--cada elemento da String -> Decimal
+fun :: [Char]->[(Char,Int)]->[Int]
+fun [] ll = []
+fun numHex ll 
+	|numHex == [] = []
+	|otherwise = [hexToDeci x ll|x<-numHex]
 
 deciToHexa :: Int->String
 deciToHexa 0 = ""
@@ -96,17 +106,11 @@ deciToHexa num
 	|mod num 16 == 15 = deciToHexa(d) ++"F"
 	|otherwise = deciToHexa(d) ++ show ((mod num 16)::Int)
 	where d = div num 16
-		
-somatorioHexadecimal :: [String]->String
-somatorioHexadecimal n = deciToHexa (sum (hexaDecimal(n)))
+somatorioHexadecimal :: [Char]->[(Char,Int)]->String
+somatorioHexadecimal n ll = deciToHexa (sum (fun (n) (ll)))
 
-{--Q3 
-palindromoDecimal :: String->String
-palindromoDecimal "" = ""
-palindromoDecimal (a:as)
-		|a == []= ""
-		|a == "A" =  -}
-		
+--Q3
+
 
 --Q4
 type Vector = [Double]
@@ -117,28 +121,21 @@ mB::Matrix
 mA = [[1,2],[2,3]]
 mB = [[1,1],[1,1]]
 
-getElemPos :: Matrix->Int->Int->Double
-getElemPos m i j = (m!!(i-1))!!(j-1)
+--multiplica posições e depois soma
+calc :: Vector->Vector->Double
+calc v1 v2 = sum [a*b| (a,b)<-zip v1 v2]
 
-mult :: Vector->Vector->Double
-mult a b = sum [x*y|(x,y)<-zip a b]
-
-col:: Matrix->Matrix
-col (a:as)
-		|length a == 1 = [[head x|x<-(a:as), x/=[]]]
-		|True = [map head (a:as)]++col(map tail (a:as))
-		
-
-mult :: Matriz -> Matriz -> Matriz
-mult (x:[]) b = [map (mult x) (col b)]
-mult (x:xs) b 
-		| length x == length b = [map (pp x) (col b)] ++ (mult xs b)
-        | True = error "-------------------"
-
-multiplicaM :: Matrix-> Matrix-> Matrix
-multiplicaM [] _ = [[]]
-
---multiplicaM 
+getCol::Matrix->Matrix
+getCol (x:xs)
+	|length x == 1 = [[head x|x<-(x:xs), x/=[]]]
+	|True = [map head (x:xs)] ++ getCol (map (tail) (x:xs))
+	
+multiplicaMatrizes:: Matrix->Matrix->Matrix
+multiplicaMatrizes (x:[]) y = [map (calc x) (getCol y)]
+multiplicaMatrizes (x:xs) y
+		|length x == length y = [map (calc x) (getCol y)] ++ multiplicaMatrizes (xs) (y)
+		|otherwise = [[]]
+	
 
 
 
