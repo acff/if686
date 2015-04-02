@@ -110,8 +110,22 @@ somatorioHexadecimal :: [Char]->[(Char,Int)]->String
 somatorioHexadecimal n ll = deciToHexa (sum (fun (n) (ll)))
 
 --Q3
+func :: [Int]->Int
+func [] = 0
+func (a:as) = a*(16^((length (a:as))-1)) + func (as)
 
+inverte::String->String 
+inverte "" = ""
+inverte x = [last x] ++ inverte (take((length x)-1) x)
 
+palindromoDecimal :: [Char] -> [Char] 
+palindromoDecimal "" = ""
+palindromoDecimal ll 
+		|(num == inv )= num ++ "- PALINDROMO"
+		|otherwise = num ++ "- NAO PALINDROMO"
+		where  num = (show (func (fun (ll) (conHexToDeci))));
+			   inv = inverte num
+			  
 --Q4
 type Vector = [Double]
 type Matrix = [Vector]
