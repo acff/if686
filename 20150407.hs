@@ -2,7 +2,7 @@ data Shape = Circle Float
              |Rectangle Float Float
 
 area :: Shape -> Float
-area (Circle r) = 2*pi*(r)^2
+area (Circle r) = pi*(r)^2
 area (Rectangle a h) = a*h
 
 data Dias = Segunda Int [String] 
@@ -49,4 +49,20 @@ data Expr = Lit Int
 
 showExpr :: Expr -> String
 showExpr (Lit n) = show n
-showExpr (Add Expr Expr)
+showExpr (Add Expr Expr) = 
+
+{-
+showExpr :: Expr -> String
+
+toList :: List t -> [t]
+
+fromList :: [t] -> List t
+
+depth :: Tree t -> Int
+
+collapse :: Tree t -> [t]
+
+bfs :: Tree t -> t -> Bool
+
+mapTree :: (t -> u) -> Tree t -> Tree u 
+-}
