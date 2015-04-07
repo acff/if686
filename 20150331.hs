@@ -13,6 +13,7 @@ as classes de tipo permitem definir diferentes tipos para uma função, facilita
 http://stackoverflow.com/questions/6948166/javas-interface-and-haskells-type-class-differences-and-similarities
 
 -}
+
 --Q3
 type Vertice = Int
 type Aresta = (Vertice, Vertice)
@@ -52,3 +53,27 @@ mediana list
 filtroMediana :: [[Int]]->Int->[Int]
 filtroMediana [[]] n =[]
 		
+-- Exerc (aula monitoria)
+--Q1
+listaEstados :: [Int]
+listaEstados  = [1, 2, 3]
+
+listaTransicoes :: [(Int, Int, Char)]
+listaTransicoes = [(1, 1, '1'), (1, 3, '0'), (3, 2, '1')]
+
+listaAceitacao :: [Int]
+listaAceitacao = [2]
+
+listaT ::[(Int, Int, Char)] -> [Int]
+listaT [] = []
+listaT (a:as) = fst(a) ++ listaT (as)
+
+--transicao :: Char->Int->[(Int, Int, Char)]->Int
+
+
+--     cadeia->lista estados->lista transições->estado inicial->lista aceitação
+--afd :: [Char]-> [Int]-> [(Int, Int, Char)]-> Int-> [Int] -> Bool
+--afd [] le lt inicial la = []
+
+
+
