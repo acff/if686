@@ -49,19 +49,28 @@ data Expr = Lit Int
 
 showExpr :: Expr -> String
 showExpr (Lit n) = show n
-showExpr (Add Expr Expr) = 
+showExpr (Add exprA exprB) = showExpr(exprA) ++ "+" ++ showExpr(exprB)
+showExpr (Add exprA exprB) = showExpr(exprA) ++ "-" ++ showExpr(exprB)
 
-{-
-showExpr :: Expr -> String
+data List t = Nil
+			  |Cons t (List t)
 
 toList :: List t -> [t]
+toList Nil = []
+toList (Cons a as) = a:toList(as)
 
-fromList :: [t] -> List t
+fromList:: [t] -> List t
+fromList [] = Nil
+fromList (a:as) = Cons a (fromList as)
 
 depth :: Tree t -> Int
+depth NilT = 0
+depth (Node r a b) = 1 + max (depth(a)) (depth(b))
 
 collapse :: Tree t -> [t]
-
+collapse NilT = []
+collapse (Node r a b) = collapse a ++ [r] ++ collapse b
+{-
 bfs :: Tree t -> t -> Bool
 
 mapTree :: (t -> u) -> Tree t -> Tree u 
