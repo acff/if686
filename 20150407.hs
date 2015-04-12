@@ -59,7 +59,7 @@ toList :: List t -> [t]
 toList Nil = []
 toList (Cons a as) = a:toList(as)
 
-fromList:: [t] -> List t
+fromList :: [t] -> List t
 fromList [] = Nil
 fromList (a:as) = Cons a (fromList as)
 
@@ -70,8 +70,14 @@ depth (Node r a b) = 1 + max (depth(a)) (depth(b))
 collapse :: Tree t -> [t]
 collapse NilT = []
 collapse (Node r a b) = collapse a ++ [r] ++ collapse b
-{-
-bfs :: Tree t -> t -> Bool
 
-mapTree :: (t -> u) -> Tree t -> Tree u 
--}
+bfs :: Tree t -> t -> Bool
+bfs NilT _ = False
+bfs (Node t l r) n
+	 | t == n = True
+	 | otherwise = (bfs l n) || (bfs r n)
+
+mapTree :: (t -> u) -> Tree t -> Tree u
+mapTree _ NilT = NilT
+mapTree f (Node t l r) = Node (f t) (mapTree f l) (mapTree f r)
+
