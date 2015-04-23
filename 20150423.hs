@@ -67,7 +67,46 @@ splitWords "" = []
 splitWords s = ((getWord s) :splitWords (dropSpace(droWord s)))
 
 
+-- AULA 6 (slide 8) ANOTAÇÃO
+--exemplo 01
+filter (>0). map (+1) :: ?
 
+      (Num t) => (t->t)
+map ::(a -> b) -> [a] -> [b]
+map (+1) :: Num t => [t] -> [t] -- usou t por causa do 1
 
+		(Num t, Ord t) => (t -> Bool)
+filter :: (c -> Bool) -> [c] -> [c]
+filter (>0) :: (Num t , Ord t)=> [u]->[u]
 
+(.) :: (u -> v) -> (t-> u) -> (t->v) -- primeiro aplica o segundo param
 
+(u -> v) == (Num t , Ord t)=> [u]->[u] -- filter
+(t -> u) == Num t => [t] -> [t] -- map
+--obs o 'u' tem q ser do mesmo tipo. O filter é mais especifico do q map. LOGO...
+**(t -> u) == (Num t, Ord t) => [t] -> [t] --  insere Ord no map, por ser o mais geral
+-- **obs t = u = i
+(t -> v) == (Num i, Ord i) => [i] -> [i]
+
+--exemplo 02
+map.foldr
+map ::(a -> b) -> [a] -> [b]
+foldr :: (c -> d -> d) -> d -> [c] -> d
+(.) :: (u -> v) -> (t-> u) -> (t->v)
+
+--map
+u == (a -> b)
+v == [a] -> [b]
+--foldr
+t == (c -> d -> d)
+u == d -> ([c] -> d)
+-- o 'u' ficou diferente de map para foldr
+-- b pode ser qualquer tipo inclusive uma função 
+a == d
+b == ([c] -> d)
+--modificando
+--map
+u == (d -> ([c] -> d))
+v == [d] -> [([c] -> d)]
+--resultado 
+(t-> v) == (c -> d -> d) -> ([d]->[[c]->d])
