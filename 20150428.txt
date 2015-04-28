@@ -1,0 +1,184 @@
+{-           TRABALHO 10           -}
+
+
+I) foldr (+).(.).map
+
+--dividiremos em duas partes 
+-- 1. x = (.).map
+-- 2. foldr (+).x
+
+--Resolvendo a parte 1
+(.).map
+
+. :: :: (u'->v')->(t'->u')->(t'->v')
+
+(.) :: (u->v)->(t->u)->(t->v)
+map :: (a->b)->[a]->[b]
+
+(t'->u') -- MAP
+t' = (a->b)
+u' = [a]->[b]
+
+(u'->v') -- (.)
+u' = (u->v)
+v' = (t->u)->(t->v)
+
+{-
+u' != u'
+u = [a]
+v = [b]
+--Logo ...
+(u'->v') -- (.)
+u' = ([a]->[b])
+v' = (t->[a])->(t->[b])
+-} 
+
+(t'->v'):: (a->b)-> (t->[a])->(t->[b])
+ x = (a->b)-> (t->[a])->(t->[b])
+
+ --Resolvendo parte 2
+ foldr (+).x
+
+ . :: :: (u''->v'')->(t''->u'')->(t''->v'')
+
+x :: (a->b)-> (t->[a])->(t->[b])
+foldr (+) :: d-> [d]->d
+
+(t''->u'') -- X
+t'' = (a->b)
+u'' = (t->[a])->(t->[b])
+
+(u''->v'') --FOLDR (+)
+u'' = d
+v'' = [d]->d
+
+{-
+u'' != u''
+d = (t->[a])->(t->[b])
+--Logo ...
+(u''->v'') --FOLDR (+)
+u'' = (t->[a])->(t->[b])
+v'' = [((t->[a])->(t->[b]))]->(t->[a])->(t->[b])
+-}
+
+(t''->v'') :: (a->b) -> [((t->[a])->(t->[b]))]->(t->[a])->(t->[b])
+
+
+II) (\x y z -> foldr z x y).map
+
+. ::  (u'->v')->(t'->u')->(t'->v')
+
+--foldr :: (a -> b -> b) -> b -> [a] -> b
+--A primeira função troca as ordens dos 'params' de foldr
+(\x y z -> foldr z x y) :: b -> [a] -> (a -> b -> b) -> b
+map :: (c->d)->[c]->[d]
+
+(t'->u') -- MAP
+t' = (c->d)
+u' = [c]->[d]
+
+(u'->v') --(\x y z -> foldr z x y)
+u' = b 
+v' = [a] -> (a -> b -> b) -> b
+
+{-
+u' != u'
+b = [c]->[d]
+--Logo ...
+(u'->v') --(\x y z -> foldr z x y)
+u' = [c]->[d]
+v' = [a] -> (a -> ([c]->[d]) -> ([c]->[d])) -> ([c]->[d])
+-}
+
+(t'->v') :: (c->d) -> [a] -> (a -> ([c]->[d]) -> ([c]->[d])) -> ([c]->[d])
+
+
+III) map.((.) (foldr (++) (foldr (++) [] [[1], [2]])))
+
+--dividiremos em 4 partes
+--1.foldr (++) [] [[1], [2]] =x
+--2.foldr (++) x =y
+--3.(.) y = z
+--4.map.z
+
+--Resolvendo parte 1
+foldr (++) [] [[1], [2]] ::(Num a) => [a] --x
+
+--Resolvendo parte 2
+foldr (++) [a] :: (Num a) => [[a]]->[a] --y
+
+--Resolvendo parte 3 
+(.) :: (u->v)->(t->u)->(t->v)
+(.) y = (.) (foldr (++) (foldr (++) [] [[1], [2]])) :: (t->[[u]])->(t->[v])
+
+--Resolvendo parte 4 
+map.z
+map :: (c->d)->[c]->[d]
+. ::  (u'->v')->(t'->u')->(t'->v')
+
+(t'->u') -- Z
+t' = (t->[[u]])
+u' = (t->[v])
+
+(u'->v') -- MAP
+u' = (c->d)
+v' = [c]->[d]
+
+--mudar nomenclatura MAP
+{-
+c = t
+d = [v]
+--Logo ...
+(u'->v') -- MAP
+u' = (t->[v])
+v' = [t]->[[v]]
+-}
+ 
+(t'->v') :: (t->[[u]]) -> [t]->[[v]]
+
+
+IV) (foldr).(.)$(!!)
+--1.(foldr).(.)
+ (.) :: (u'->v')->(t'->u')->(t'->v')
+ foldr :: (a -> b -> b) -> b -> [a] -> b
+
+t -> u -- (.)
+t = (u'->v')
+u = (t'->u')->(t'->v')
+
+u -> v --FOLDR
+u = (a -> b -> b)
+v = b -> [a] -> b
+
+{-
+u != u
+a = (t'-> u')
+b->b = (t'->v')
+
+u -> v --FOLDR
+u = ((t'-> u') -> (t'->v'))
+v = b -> [(t'-> u')] -> b
+-}
+t -> v :: (u'->v')-> b -> [(t'-> u')] -> b
+--colocando as entradas das correpondentes
+t -> v :: (u'->b) -> b -> [(b-> u')] -> b
+
+--2.(foldr).(.)$(!!)
+$ :: (c -> d) -> c -> d
+c = (u'->b)
+d =  b -> [(b-> u')] -> b
+
+c = [a] -> Int -> a
+
+{-
+c != c
+u' = [a]
+b = Int -> a
+
+$ :: (c -> d) -> c -> d
+c = ([a]->b)
+d =  (Int -> a) -> [((Int -> a)-> [a])] -> Int -> a
+-}
+d =  (Int -> a) -> [((Int -> a)-> [a])] -> Int -> a
+
+(foldr).(.)$(!!) ::(Int -> a) -> [((Int -> a)-> [a])] -> Int -> a
